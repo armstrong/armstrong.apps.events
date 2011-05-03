@@ -45,7 +45,7 @@ class Event(BaseEvent):
 
 class BaseRSVP(models.Model):
 
-    event = models.ForeignKey(Event)
+    event = models.ForeignKey(Event, related_name='events')
     email = models.EmailField()
     name = models.CharField(max_length=50)
     created = models.DateTimeField(auto_now=True)
