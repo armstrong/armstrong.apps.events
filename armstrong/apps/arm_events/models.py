@@ -2,10 +2,12 @@ from datetime import datetime, time
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 from armstrong.apps.arm_events.managers import EventManager
 
 class BaseEvent(models.Model):
 
+    sites = models.ManyToManyField(Site)
     slug = models.SlugField()
     title = models.CharField(max_length=100)
     location = models.CharField(max_length=100)

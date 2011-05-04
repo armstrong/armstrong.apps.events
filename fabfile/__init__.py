@@ -12,6 +12,7 @@ def test():
             'django.contrib.contenttypes',
             'django.contrib.sessions',
             'django.contrib.auth',
+            'django.contrib.sites',
             'armstrong.apps.arm_events',
             'armstrong.apps.arm_events.tests.arm_events_support',
         ),
