@@ -1,60 +1,50 @@
 import random
 from datetime import date, timedelta, datetime
 from django.core.urlresolvers import reverse
-from ._utils import generate_random_event, TestCase
+from ._utils import generate_random_event, TestCase, hours_ago, hours_ahead
 from ..models import Event
 
 
 class EventManagerTestCase(TestCase):
-    def setUp(self):
-        self.event1 = generate_random_event(date.today() + timedelta(days=5))
-        self.event2 = generate_random_event(date.today() - timedelta(days=5))
 
-    def test_upcoming_basic(self):
-        self.assertTrue(self.event1 in Event.objects.upcoming())
-        self.assertTrue(self.event2 not in Event.objects.upcoming())
+    def test_upcoming_future(self):
+        event_future = generate_random_event(hours_ahead(1), hours_ahead(2))
+        self.assertTrue(event_future in Event.objects.upcoming())
 
-    def test_upcoming_ignore_times(self):
-        # start times shouldn't matter
-        self.event1.start_time = (datetime.now() - timedelta(hours=2)).time()
-        self.event1.save()
-        self.assertEqual(len(Event.objects.upcoming()), 1)
+    def test_upcoming_in_progress(self):
+        event_inprogress = generate_random_event(hours_ago(1), hours_ahead(1))
+        self.assertTrue(event_inprogress in Event.objects.upcoming())
+        self.assertTrue(event_inprogress in Event.objects.upcoming(days=1))
 
-        self.event2.start_time = (datetime.now() + timedelta(hours=1)).time()
-        self.event2.save()
-        self.assertEqual(len(Event.objects.upcoming()), 1)
+    def test_upcoming_happened_today(self):
+        """ don't run this at 12am! go to bed """
+        event_happened_today = generate_random_event(hours_ago(2), hours_ago(1))
+        self.assertTrue(event_happened_today in Event.objects.upcoming())
+        self.assertTrue(event_happened_today in Event.objects.upcoming(days=0))
+        self.assertTrue(event_happened_today in Event.objects.upcoming(days=1))
 
-        # end times shouldn't matter
-        self.event1.end_time = (datetime.now() - timedelta(hours=1)).time()
-        self.event1.save()
-        self.assertEqual(len(Event.objects.upcoming()), 1)
+    def test_upcoming_happened_yesterday(self):
+        event_happened_yesterday = generate_random_event(hours_ago(25),
+                hours_ago(24))
+        self.assertFalse(event_happened_yesterday in Event.objects.upcoming())
+        self.assertFalse(event_happened_yesterday in Event.objects.upcoming(days=0))
+        self.assertFalse(event_happened_yesterday in Event.objects.upcoming(days=1))
 
-        self.event2.end_time = (datetime.now() + timedelta(hours=2)).time()
-        self.event2.save()
-        self.assertEqual(len(Event.objects.upcoming()), 1)
+    def test_upcoming_tmrw(self):
+        event_tmrw = generate_random_event(hours_ahead(24),
+                hours_ahead(25))
+        self.assertFalse(event_tmrw in Event.objects.upcoming(days=0))
+        self.assertTrue(event_tmrw in Event.objects.upcoming(days=1))
 
-    def test_upcoming_today(self):
-        self.event1.start_day = date.today()
-        self.event1.save()
-        self.assertTrue(self.event1 in Event.objects.upcoming())
-        self.assertTrue(self.event1 in Event.objects.upcoming(days=0))
-
-    def test_upcoming_span(self):
-        self.event1.start_day = date.today() - timedelta(days=1)
-        self.event1.end_day = date.today()
-        self.event1.save()
-        self.assertTrue(self.event1 in Event.objects.upcoming())
+    def test_upcoming_3_days(self):
+        event_3_days = generate_random_event(hours_ahead(24*3),
+                hours_ahead(24*3+1))
+        self.assertTrue(event_3_days in Event.objects.upcoming(days=3))
+        self.assertFalse(event_3_days in Event.objects.upcoming(days=2))
 
     def test_upcoming_asc_order(self):
-        events = [generate_random_event(date.today() + \
-                timedelta(days=random.randint(0,10))) for i in range(10)]
+        events = [generate_random_event(hours_ago(i), hours_ago(i+1))
+                for i in random.sample(xrange(-48, 48), 10)]
 
         upcoming = list(Event.objects.upcoming())
-        self.assertTrue(upcoming == sorted(upcoming, key=lambda e: e.start_day))
-
-    def test_upcoming_days(self):
-        self.assertEqual(len(Event.objects.upcoming(days=10)), 1)
-        self.assertTrue(self.event1 in Event.objects.upcoming(days=6))
-        self.assertTrue(self.event1 in Event.objects.upcoming(days=5))
-        self.assertFalse(self.event1 in Event.objects.upcoming(days=4))
-
+        self.assertTrue(upcoming == sorted(upcoming, key=lambda e: e.start_date))

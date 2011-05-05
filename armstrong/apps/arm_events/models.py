@@ -1,4 +1,4 @@
-from datetime import datetime, time
+from datetime import datetime, time, timedelta
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
@@ -12,10 +12,9 @@ class BaseEvent(models.Model):
     title = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
     description = models.TextField(blank=True)
-    start_day = models.DateField(db_index=True)
-    start_time = models.TimeField(null=True, blank=True)
-    end_day = models.DateField(db_index=True, null=True, blank=True)
-    end_time = models.TimeField(null=True, blank=True)
+    start_date = models.DateTimeField(db_index=True)
+    end_date = models.DateTimeField(db_index=True)
+    all_day = models.BooleanField(default=False)
     website = models.URLField(blank=True)
     active = models.BooleanField(default=True)
     has_rsvp = models.BooleanField(default=False)
@@ -24,7 +23,7 @@ class BaseEvent(models.Model):
 
     class Meta:
         abstract = True
-        ordering = ['start_day']
+        ordering = ['start_date']
 
     def __unicode__(self):
         return self.title
@@ -32,15 +31,16 @@ class BaseEvent(models.Model):
     def get_absolute_url(self):
         return reverse('event_detail', kwargs={'slug':self.slug})
 
+    def save(self, *args, **kwargs):
+        if self.all_day:
+            self.start_date = datetime.combine(self.start_date.date(), time())
+            self.end_date = datetime.combine(self.end_date.date(), time(23, 59))
+
+        super(BaseEvent, self).save(*args, **kwargs)
+
     @property
     def has_passed(self):
-        if self.end_day:
-            end = datetime.combine(self.end_day, self.end_time
-                    if self.end_time else time(23,59))
-        else:
-            end = datetime.combine(self.start_day, time(23,59))
-
-        return datetime.now() > end
+        return datetime.now() > self.end_date
 
 class Event(BaseEvent):
     pass
@@ -56,7 +56,7 @@ class BaseRSVP(models.Model):
         abstract = True
 
     def __unicode__(self):
-        return '%s - %s' % (self.event.start_day, self.email)
+        return '%s - %s' % (self.event.start_date, self.email)
 
 class RSVP(BaseRSVP):
     pass
