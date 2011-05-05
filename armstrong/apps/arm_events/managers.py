@@ -1,7 +1,7 @@
 from datetime import datetime, date, time, timedelta
 from django.db import models
 from django.db.models import Q
-
+from django.contrib.sites.managers import CurrentSiteManager
 
 class EventManager(models.Manager):
 
@@ -16,3 +16,6 @@ class EventManager(models.Manager):
             query = Q(end_date__range=(today, tmrw + timedelta(days=days)))
 
         return self.filter(query, active=True)
+
+class CurrentSiteEventManager(CurrentSiteManager, EventManager):
+    pass

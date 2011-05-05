@@ -21,6 +21,7 @@ def test():
             'django.contrib.auth.context_processors.auth',
         ),
         'ROOT_URLCONF': 'armstrong.apps.arm_events.urls',
+        'SITE_ID': 1,
     }
     with html_coverage_report():
         run_tests(settings, 'arm_events', 'arm_events_support')

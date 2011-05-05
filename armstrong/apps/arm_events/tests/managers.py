@@ -48,3 +48,9 @@ class EventManagerTestCase(TestCase):
 
         upcoming = list(Event.objects.upcoming())
         self.assertTrue(upcoming == sorted(upcoming, key=lambda e: e.start_date))
+
+    def test_upcoming_no_site(self):
+        event = generate_random_event(hours_ahead(1), hours_ahead(2))
+        self.assertTrue(event in Event.on_site.upcoming())
+        event.sites.clear()
+        self.assertFalse(event in Event.on_site.upcoming())

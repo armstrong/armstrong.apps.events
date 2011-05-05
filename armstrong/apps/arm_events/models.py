@@ -3,7 +3,8 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
-from armstrong.apps.arm_events.managers import EventManager
+from armstrong.apps.arm_events.managers import EventManager, \
+        CurrentSiteEventManager
 
 class BaseEvent(models.Model):
 
@@ -20,6 +21,7 @@ class BaseEvent(models.Model):
     has_rsvp = models.BooleanField(default=False)
 
     objects = EventManager()
+    on_site = CurrentSiteEventManager()
 
     class Meta:
         abstract = True
@@ -37,6 +39,9 @@ class BaseEvent(models.Model):
             self.end_date = datetime.combine(self.end_date.date(), time(23, 59))
 
         super(BaseEvent, self).save(*args, **kwargs)
+
+        if not self.sites.exists():
+            self.sites.add(Site.objects.get_current())
 
     @property
     def has_passed(self):
