@@ -55,6 +55,8 @@ class BaseRSVP(models.Model):
     event = models.ForeignKey(Event, related_name='events')
     email = models.EmailField()
     name = models.CharField(max_length=50)
+    guests = models.PositiveSmallIntegerField(blank=True, null=True,
+            choices=[(i, i) for i in range(11)], default=0)
     created = models.DateTimeField(auto_now=True)
 
     class Meta:
