@@ -1,6 +1,7 @@
 from django.views.generic import CreateView
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
+from django.contrib.sites.models import Site
 from armstrong.apps.arm_events.models import Event, RSVP
 from armstrong.apps.arm_events.forms import RSVPCreateForm
 
@@ -11,11 +12,13 @@ class RSVPCreateView(CreateView):
 
     def get_success_url(self):
 
-        return reverse('rsvp_success', kwargs={'slug': self.kwargs['event_slug']})
+        return reverse('rsvp_success',
+                kwargs={'slug': self.kwargs['event_slug']})
 
     def get_initial(self):
 
-        event = get_object_or_404(Event, slug=self.kwargs['event_slug'])
+        event = get_object_or_404(Event, slug=self.kwargs['event_slug'],
+                sites__in=[Site.objects.get_current()])
 
         self.initial['event'] = event.id
 

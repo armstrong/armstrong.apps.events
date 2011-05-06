@@ -16,7 +16,7 @@ urlpatterns = patterns('',
             name='rsvp_create'),
 
     url(r'^(?P<slug>[-\w]+)/rsvp/success/$', DetailView.as_view(
-            model=Event,
+            queryset=Event.on_site.all(),
             template_name='arm_events/rsvp_success.html'
     ), name='rsvp_success'),
 
