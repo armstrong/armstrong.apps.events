@@ -15,6 +15,7 @@ def test():
             'django.contrib.sites',
             'armstrong.apps.arm_events',
             'armstrong.apps.arm_events.tests.arm_events_support',
+            'armstrong.core.arm_content',
         ),
         'TEMPLATE_CONTEXT_PROCESSORS': (
             'django.core.context_processors.request',

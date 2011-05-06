@@ -20,8 +20,11 @@ def generate_random_event(start_date, end_date):
     slug = 'random-slug-%s' % random.randint(100,1000)
     title = 'Random title %s' % random.randint(100,1000)
     location = 'Random lugar %s' % random.randint(100,1000)
+    pub_date = datetime.now()
+    pub_status = 'P'
     return Event.objects.create(slug=slug, title=title, start_date=start_date,
-            end_date=end_date, location=location)
+            end_date=end_date, location=location, pub_date=pub_date,
+            pub_status=pub_status)
 
 class TestCase(DjangoTestCase):
     def setUp(self):

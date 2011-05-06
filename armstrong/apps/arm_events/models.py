@@ -3,10 +3,11 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
+from armstrong.core.arm_content.mixins.publication import PublicationMixin
 from armstrong.apps.arm_events.managers import EventManager, \
         CurrentSiteEventManager
 
-class BaseEvent(models.Model):
+class BaseEvent(PublicationMixin):
 
     sites = models.ManyToManyField(Site)
     slug = models.SlugField()
@@ -17,7 +18,6 @@ class BaseEvent(models.Model):
     end_date = models.DateTimeField(db_index=True)
     all_day = models.BooleanField(default=False)
     website = models.URLField(blank=True)
-    active = models.BooleanField(default=True)
     has_rsvp = models.BooleanField(default=False)
 
     objects = EventManager()

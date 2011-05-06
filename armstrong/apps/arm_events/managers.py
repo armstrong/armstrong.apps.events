@@ -15,7 +15,7 @@ class EventManager(models.Manager):
         else:
             query = Q(end_date__range=(today, tmrw + timedelta(days=days)))
 
-        return self.filter(query, active=True)
+        return self.filter(query)
 
 class CurrentSiteEventManager(CurrentSiteManager, EventManager):
     pass
