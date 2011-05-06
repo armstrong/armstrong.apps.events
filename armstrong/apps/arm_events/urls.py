@@ -12,7 +12,7 @@ urlpatterns = patterns('',
     url(r'^(?P<slug>[-\w]+)/$', DetailView.as_view(model=Event,
             queryset=Event.on_site.all()), name='event_detail'),
 
-    url(r'^(?P<slug>[-\w]+)/rsvp/$', RSVPCreateView.as_view(),
+    url(r'^(?P<event_slug>[-\w]+)/rsvp/$', RSVPCreateView.as_view(),
             name='rsvp_create'),
 
     url(r'^(?P<slug>[-\w]+)/rsvp/success/$', DetailView.as_view(

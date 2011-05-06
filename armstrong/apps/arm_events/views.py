@@ -11,11 +11,11 @@ class RSVPCreateView(CreateView):
 
     def get_success_url(self):
 
-        return reverse('rsvp_success', kwargs={'slug': self.kwargs['slug']})
+        return reverse('rsvp_success', kwargs={'slug': self.kwargs['event_slug']})
 
     def get_initial(self):
 
-        event = get_object_or_404(Event, slug=self.kwargs['slug'])
+        event = get_object_or_404(Event, slug=self.kwargs['event_slug'])
 
         self.initial['event'] = event.id
 

@@ -24,6 +24,7 @@ class EventViewTestCase(TestCase):
         self.assertEqual(list(response.context['event_list']),
                 list(Event.objects.upcoming()))
 
+
 class RSVPViewTestCase(TestCase):
     def setUp(self):
         self.event = generate_random_event(hours_ago(1), hours_ahead(1))
@@ -31,7 +32,7 @@ class RSVPViewTestCase(TestCase):
 
     def test_create_form(self):
         response = self.c.get(reverse('rsvp_create',
-                kwargs={'slug': self.event.slug}))
+                kwargs={'event_slug': self.event.slug}))
 
         self.assertTrue('form' in response.context)
 
@@ -44,7 +45,7 @@ class RSVPViewTestCase(TestCase):
 
         self.c.login(username='jimi', password='experience')
         response = self.c.get(reverse('rsvp_create',
-                kwargs={'slug': self.event.slug}))
+                kwargs={'event_slug': self.event.slug}))
 
         self.assertTrue('form' in response.context)
         self.assertContains(response, user.email)
@@ -54,7 +55,7 @@ class RSVPViewTestCase(TestCase):
         data = {'name': 'bob dylan', 'email': 'bob@armstrongcms.org',
                 'event': self.event.id}
         post = self.c.post(reverse('rsvp_create',
-                kwargs={'slug': self.event.slug}), data, follow=True)
+                kwargs={'event_slug': self.event.slug}), data, follow=True)
 
         self.assertTrue('rsvp success' in post.content)
         self.assertTrue(self.event.title in post.content)
