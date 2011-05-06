@@ -15,7 +15,7 @@ setup(
 
     install_requires=[
         'distribute',
-        'arm_content',
+        'armstrong.core.arm_content',
     ],
 
     classifiers=[
