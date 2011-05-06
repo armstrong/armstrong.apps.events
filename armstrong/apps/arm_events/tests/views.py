@@ -16,6 +16,12 @@ class EventViewTestCase(TestCase):
         response = self.c.get(event.get_absolute_url())
         self.assertEqual(response.context['event'], event)
 
+    def test_event_detail_no_site(self):
+        event = generate_random_event(hours_ago(1), hours_ahead(1))
+        event.sites.clear()
+        response = self.c.get(event.get_absolute_url())
+        self.assertEqual(response.status_code, 404)
+
     def test_event_list(self):
         event0 = generate_random_event(hours_ago(1), hours_ahead(1))
         event1 = generate_random_event(hours_ahead(2), hours_ahead(3))
