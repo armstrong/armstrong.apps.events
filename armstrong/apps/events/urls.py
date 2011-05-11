@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 from django.views.generic import DetailView, ListView
-from armstrong.apps.arm_events.models import Event
-from armstrong.apps.arm_events.views import RSVPCreateView
+from armstrong.apps.events.models import Event
+from armstrong.apps.events.views import RSVPCreateView
 
 
 urlpatterns = patterns('',
@@ -17,7 +17,7 @@ urlpatterns = patterns('',
 
     url(r'^(?P<slug>[-\w]+)/rsvp/success/$', DetailView.as_view(
             queryset=Event.on_site.all(),
-            template_name='arm_events/rsvp_success.html'
+            template_name='events/rsvp_success.html'
     ), name='rsvp_success'),
 
 )

@@ -1,16 +1,16 @@
 from setuptools import setup
 
 setup(
-    name='armstrong.apps.arm_events',
+    name='armstrong.apps.events',
     version='0.1',
     description='Provides the events',
     author='Bay Citizen & Texas Tribune',
     author_email='info@armstrongcms.org',
-    url='http://github.com/armstrongcms/armstrong.apps.arm_events/',
+    url='http://github.com/armstrongcms/armstrong.apps.events/',
     packages=[
         'armstrong',
         'armstrong.apps',
-        'armstrong.apps.arm_events',
+        'armstrong.apps.events',
     ],
 
     install_requires=[

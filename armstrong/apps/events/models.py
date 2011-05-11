@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from armstrong.core.arm_content.mixins.publication import PublicationMixin
-from armstrong.apps.arm_events.managers import EventManager, \
+from armstrong.apps.events.managers import EventManager, \
         CurrentSiteEventManager
 
 class BaseEvent(PublicationMixin):

@@ -1,4 +1,4 @@
-armstrong.apps.arm_events
+armstrong.apps.events
 =========================
 This package provides events.
 
@@ -12,7 +12,7 @@ Foundation`_.  The first release is scheduled for June, 2011.
 
 To follow development, be sure to join the `Google Group`_.
 
-``armstrong.apps.arm_events`` is part of the `Armstrong`_ project.  You're
+``armstrong.apps.events`` is part of the `Armstrong`_ project.  You're
 probably looking for that.
 
 
