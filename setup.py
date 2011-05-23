@@ -33,7 +33,7 @@ def build_package(dirpath, dirnames, filenames):
 
 
 [build_package(dirpath, dirnames, filenames) for dirpath, dirnames, filenames
-        in os.walk('armstrong')]
+        in os.walk('armstrong/apps/events')]
 
 setup(
     name='armstrong.apps.events',
@@ -44,6 +44,7 @@ setup(
     url='http://github.com/armstrongcms/armstrong.apps.events/',
     packages=packages,
     package_data={"armstrong": data_files},
+    namespace_packages=["armstrong", "armstrong.apps", ]
     install_requires=[
         'Django==1.3',
         'armstrong.core.arm_content',
