@@ -9,7 +9,6 @@ from armstrong.apps.events.managers import EventManager, \
 
 class BaseEvent(PublicationMixin):
 
-    sites = models.ManyToManyField(Site)
     slug = models.SlugField()
     title = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
