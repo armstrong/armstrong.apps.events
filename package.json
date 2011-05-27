@@ -1,6 +1,6 @@
 {
     "name": "armstrong.apps.events",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Basic events for Armstrong CMS",
     "install_requires": [
       "Django==1.3",
