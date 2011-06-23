@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models import Q
 from django.contrib.sites.managers import CurrentSiteManager
 
+
 class EventManager(models.Manager):
 
     def upcoming(self, days=None):
@@ -16,6 +17,7 @@ class EventManager(models.Manager):
             query = Q(end_date__range=(today, tmrw + timedelta(days=days)))
 
         return self.filter(query)
+
 
 class CurrentSiteEventManager(CurrentSiteManager, EventManager):
     pass

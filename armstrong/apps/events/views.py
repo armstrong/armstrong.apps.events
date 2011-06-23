@@ -5,6 +5,7 @@ from django.contrib.sites.models import Site
 from armstrong.apps.events.models import Event, RSVP
 from armstrong.apps.events.forms import RSVPCreateForm
 
+
 class RSVPCreateView(CreateView):
 
     model = RSVP

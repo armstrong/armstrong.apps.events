@@ -7,6 +7,7 @@ from armstrong.core.arm_content.mixins.publication import PublicationMixin
 from armstrong.apps.events.managers import EventManager, \
         CurrentSiteEventManager
 
+
 class BaseEvent(PublicationMixin):
 
     slug = models.SlugField()
@@ -30,12 +31,13 @@ class BaseEvent(PublicationMixin):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('event_detail', kwargs={'slug':self.slug})
+        return reverse('event_detail', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
         if self.all_day:
             self.start_date = datetime.combine(self.start_date.date(), time())
-            self.end_date = datetime.combine(self.end_date.date(), time(23, 59))
+            self.end_date = datetime.combine(self.end_date.date(),
+                    time(23, 59))
 
         super(BaseEvent, self).save(*args, **kwargs)
 
@@ -46,8 +48,10 @@ class BaseEvent(PublicationMixin):
     def has_passed(self):
         return datetime.now() > self.end_date
 
+
 class Event(BaseEvent):
     pass
+
 
 class BaseRSVP(models.Model):
 
@@ -63,6 +67,7 @@ class BaseRSVP(models.Model):
 
     def __unicode__(self):
         return '%s - %s' % (self.event.start_date, self.email)
+
 
 class RSVP(BaseRSVP):
     pass
