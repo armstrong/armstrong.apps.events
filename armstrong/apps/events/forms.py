@@ -1,5 +1,5 @@
 from django.forms import HiddenInput, ModelForm
-from armstrong.apps.events.models import RSVP
+from .models import RSVP
 
 
 class RSVPCreateForm(ModelForm):

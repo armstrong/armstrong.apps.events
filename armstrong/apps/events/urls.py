@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 from django.views.generic import DetailView, ListView
-from armstrong.apps.events.models import Event
-from armstrong.apps.events.views import RSVPCreateView
+from .models import Event
+from .views import RSVPCreateView
 
 
 urlpatterns = patterns('',
