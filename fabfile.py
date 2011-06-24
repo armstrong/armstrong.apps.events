@@ -1,5 +1,7 @@
 from armstrong.dev.tasks import *
 
+pip_install_first = True
+
 settings = {
     'INSTALLED_APPS': (
         'django.contrib.contenttypes',
